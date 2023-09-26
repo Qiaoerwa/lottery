@@ -6,7 +6,8 @@ const Home = () => {
     {
       priceList: [],
       redRange: [],
-      blueRange: []
+      blueRange: [],
+      lotteryTime: ''
     }
   ])
   const getLotteryData = async () => {
@@ -16,7 +17,8 @@ const Home = () => {
     const lotteryList = value.list.map((x) => ({
       redRange: x.lotteryDrawResult.slice(0, 14).split(' '),
       blueRange: x.lotteryDrawResult.slice(15).split(' '),
-      priceList: x.prizeLevelList
+      priceList: x.prizeLevelList,
+      lotteryTime: x.lotteryDrawTime
     }))
     setLotteryData(lotteryList)
   }
@@ -28,14 +30,25 @@ const Home = () => {
       <div className="history-container">
         <div className="title">历史走向</div>
         <div className="history-list">
-          {lotteryData.map((item) => {
+          {lotteryData.map((item, i) => {
             return (
-              <div className="ball-container">
-                {item.redRange.map((x) => (
-                  <div className="red-ball ball">{x}</div>
+              <div
+                key={i}
+                className="ball-container">
+                <div className="date">{item.lotteryTime}</div>
+                {item.redRange.map((x, j) => (
+                  <div
+                    key={j}
+                    className="red-ball ball">
+                    {x}
+                  </div>
                 ))}
-                {item.blueRange.map((x) => (
-                  <div className="blue-ball ball">{x}</div>
+                {item.blueRange.map((x, j) => (
+                  <div
+                    key={j}
+                    className="blue-ball ball">
+                    {x}
+                  </div>
                 ))}
               </div>
             )
