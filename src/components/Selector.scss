@@ -1,0 +1,31 @@
+.selector-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  .selector-tabs {
+    border: 2px solid rgb(179, 255, 252);
+    border-radius: 6px;
+    padding: 1px 6px;
+    color: rgb(0, 226, 255);
+    transform: skewX(-10deg);
+    &.active {
+      border: 2px solid rgb(0, 226, 255);
+      background: rgb(0, 226, 255, 0.5);
+      color: #fff;
+    }
+    & + .selector-tabs {
+      margin-left: 5px;
+    }
+  }
+  .confirm-button {
+    border: 2px solid rgb(0, 255, 247);
+    border-radius: 6px;
+    padding: 1px 10px;
+    color: rgb(255, 255, 255);
+    background: rgb(255, 0, 0, 0.5);
+    transform: skewX(-10deg);
+    margin-left: 5px;
+  }
+}
