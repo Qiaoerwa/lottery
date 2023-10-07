@@ -20,7 +20,10 @@ const PickNumber = (props = { lotteryData: [] }) => {
   ]
 
   let pickTime = 5
+  const [loading, setLoading] = useState(false)
+  const [pickedAry, setPickedAry] = useState([])
   const confirmPick = async (value) => {
+    setLoading(true)
     let res = []
     if (value.includes(1)) {
       // 杀号
@@ -38,44 +41,53 @@ const PickNumber = (props = { lotteryData: [] }) => {
       res = await excludePast(res)
     }
     setPickedAry(() => res)
+    setLoading(true)
   }
-
-  const [pickedAry, setPickedAry] = useState([{ red: [], blue: [] }])
 
   return (
     <div className="pick-container">
       <div className="pick-action">
-        <div className="title">推荐号码</div>
-        <div className="pick-select">
-          <Selector
-            options={selectorOptions}
-            confirm={confirmPick}
-          />
+        <div className="action-left">
+          <div className="title">推荐号码</div>
+        </div>
+        <div className="sction-right">
+          <div className="pick-select">
+            <Selector
+              options={selectorOptions}
+              confirm={confirmPick}
+            />
+          </div>
         </div>
       </div>
       <div className="pick-show">
-        {pickedAry.map(({ red = [], blue = [] }, i) => {
-          return (
-            <div
-              key={i}
-              className="pick-ball-container">
-              {red.map((x, j) => (
-                <div
-                  key={j}
-                  className="red-ball ball">
-                  <span>{x}</span>
-                </div>
-              ))}
-              {blue.map((x, j) => (
-                <div
-                  key={j}
-                  className="blue-ball ball">
-                  <span>{x}</span>
-                </div>
-              ))}
-            </div>
-          )
-        })}
+        {pickedAry.length ? (
+          pickedAry.map(({ red = [], blue = [] }, i) => {
+            return (
+              <div
+                key={i}
+                className="pick-ball-container">
+                {red.map((x, j) => (
+                  <div
+                    key={j}
+                    className="red-ball ball">
+                    <span>{x}</span>
+                  </div>
+                ))}
+                {blue.map((x, j) => (
+                  <div
+                    key={j}
+                    className="blue-ball ball">
+                    <span>{x}</span>
+                  </div>
+                ))}
+              </div>
+            )
+          })
+        ) : loading ? (
+          <div className="title loading">正在计算中，请稍后</div>
+        ) : (
+          <div className="title">暂无数据</div>
+        )}
       </div>
     </div>
   )

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const getLotteryHistory = {
-  getHistory({ gameNo, provinceId, pageSize, pageNo, isVerify = 1 }) {
+  async getHistory({ gameNo, provinceId, pageSize, pageNo, isVerify = 1 }) {
     const params = {
       gameNo,
       provinceId,
@@ -9,9 +9,20 @@ export const getLotteryHistory = {
       pageNo,
       isVerify
     }
-    return axios.get('https://webapi.sporttery.cn/gateway/lottery/getHistoryPageListV1.qry', { params })
+    const { data } = await axios.get('https://webapi.sporttery.cn/gateway/lottery/getHistoryPageListV1.qry', {
+      params
+    })
+
+    const lotteryList = data.value.list.map((x) => ({
+      redRange: x.lotteryDrawResult.slice(0, 14).split(' '),
+      blueRange: x.lotteryDrawResult.slice(15).split(' '),
+      priceList: x.prizeLevelList,
+      lotteryTime: x.lotteryDrawTime
+    }))
+    return lotteryList
   },
-  getDaletou(p = { pageSize: 200, pageNo: 1 }) {
+
+  getDaletou(p = { pageSize: 100, pageNo: 1 }) {
     const params = {
       gameNo: 85,
       provinceId: 0,
